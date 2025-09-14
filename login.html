@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Coverflow - Login</title>
+  <link href="templatemo-3d-coverflow.css" rel="stylesheet"/>
+  <style>
+    /* Login section 背景與卡片樣式（沿用你現有的玻璃質感風格） */
+    #login { 
+      background: radial-gradient(ellipse at center, #1a1a2e 0%, #0f0f0f 100%);
+    }
+    .auth-wrap {
+      width: 100%;
+      max-width: 440px;
+      margin: 120px auto 40px;
+      padding: 0 20px;
+      color: #fff;
+      text-align: center;
+    }
+    .auth-title { 
+      font-size: 40px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .auth-sub { color: rgba(255,255,255,.75); margin-bottom: 30px; }
+
+    /* 沿用 contact-form 的外觀做成登入卡片 */
+    .auth-card.contact-form { padding: 32px; border-radius: 20px; }
+
+    /* 欄位、行為區 */
+    .form-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin: 10px 0 20px;
+      color: rgba(255,255,255,.85);
+    }
+    .form-row .checkbox { display: inline-flex; align-items: center; gap: 8px; }
+    .link { color:#9aa4ff; text-decoration:none; }
+    .link:hover { text-decoration:underline; }
+
+    /* 密碼顯示/隱藏 */
+    .password-group { margin-bottom: 10px; }
+    .password-field { position: relative; }
+    .password-toggle {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px; padding: 6px 10px;
+      cursor: pointer; font-size: 13px; color:#fff;
+    }
+
+    /* 分隔或第三方登入 */
+    .divider { 
+      display:flex; align-items:center; gap:10px; margin:18px 0; color: rgba(255,255,255,.6);
+    }
+    .divider::before, .divider::after { content:''; height:1px; background: rgba(255,255,255,.15); flex:1; }
+    .oauth-buttons { display: grid; gap: 10px; }
+    .oauth-btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px; padding: 12px 16px; color:#fff; text-decoration:none;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .oauth-btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.1); }
+
+    /* 小字提示與錯誤訊息 */
+    .field-hint { display:block; margin-top:6px; font-size:12px; color: rgba(255,255,255,.6); text-align:left; }
+    .legal { margin-top:14px; font-size:12px; color: rgba(255,255,255,.55); }
+    .error {
+      display:none;
+      background: rgba(255, 87, 87, 0.1);
+      border: 1px solid rgba(255, 87, 87, 0.5);
+      color: #ff7b7b;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    /* Account 下拉選單 */
+    .account { position: relative; display: none; } /* 初始隱藏，登入後顯示 */
+    .account-btn { background: none; border: none; cursor: pointer; }
+    .account-menu {
+      position: absolute; top: 110%; right: 0; min-width: 180px;
+      background: rgba(0,0,0,.95);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 12px; padding: 8px;
+      backdrop-filter: blur(10px);
+      display: none; z-index: 1500;
+    }
+    .account-menu.open { display: block; }
+    .account-item {
+      display:block; width:100%;
+      text-align:left; padding:10px 12px; border-radius:8px;
+      color: rgba(255,255,255,.85); text-decoration:none; background:none; border:none; cursor:pointer;
+    }
+    .account-item:hover { background: rgba(255,255,255,.08); color:#fff; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <a href="index.html" class="logo-container">
+      <div class="logo">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <rect x="10" y="25" width="15" height="50" fill="url(#grad1)" transform="rotate(-15 17.5 50)" />
+          <rect x="35" y="15" width="15" height="70" fill="url(#grad1)" />
+          <rect x="60" y="25" width="15" height="50" fill="url(#grad1)" transform="rotate(15 67.5 50)" />
+          <circle cx="50" cy="50" r="45" fill="none" stroke="url(#grad1)" stroke-width="2" opacity="0.5" />
+        </svg>
+      </div>
+      <div class="logo-text">3D Coverflow</div>
+    </a>
+
+    <nav class="main-menu" id="mainMenu">
+      <a href="index.html" class="menu-item">Home</a>
+      <a href="about.html" class="menu-item">About</a>
+      <a href="contact.html" class="menu-item">Contact</a>
+      <!-- Login 連結（未登入顯示） -->
+      <a href="login.html" class="menu-item active" id="loginNav">Login</a>
+      <!-- Account 下拉（登入後顯示） -->
+      <div class="account" id="accountNav">
+        <button class="menu-item account-btn" id="accountBtn"
+                aria-haspopup="menu" aria-expanded="false">Account ▾</button>
+        <div class="account-menu" id="accountMenu" role="menu" aria-labelledby="accountBtn" aria-hidden="true">
+          <a href="#" role="menuitem" class="account-item">Dashboard</a>
+          <a href="#" role="menuitem" class="account-item">Setting</a>
+          <button type="button" role="menuitem" class="account-item" id="logoutBtn">Logout</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- Login Section -->
+  <section id="login" class="section">
+    <div class="auth-wrap">
+      <h1 class="auth-title">Sign in</h1>
+      <p class="auth-sub">Welcome back. Please enter your details.</p>
+
+      <form id="loginForm" class="auth-card contact-form" action="/login" method="POST" novalidate>
+        <!-- 後端填入的 CSRF -->
+        <input type="hidden" name="csrf_token" value="">
+
+        <div id="loginError" class="error" role="alert" aria-live="polite"></div>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <!-- 使用 username token 讓密碼管理器識別登入身分欄位 -->
+          <input
+            type="text"
+            id="username"
+            name="username"
+            autocomplete="username"
+            autocapitalize="none"
+            spellcheck="false"
+            required
+          />
+        </div>
+
+        <div class="form-group password-group">
+          <label for="password">Password</label>
+          <div class="password-field">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              autocomplete="current-password"
+              minlength="8"
+              required
+            />
+            <button
+              type="button"
+              class="password-toggle"
+              aria-label="Show password"
+              aria-controls="password"
+              aria-pressed="false"
+            >Show</button>
+          </div>
+          <small class="field-hint">At least 8 characters.</small>
+        </div>
+
+        <div class="form-row">
+          <label class="checkbox">
+            <input type="checkbox" id="remember" name="remember" value="on" />
+            Remember me
+          </label>
+          <a class="link" href="#">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="submit-btn">Sign in</button>
+
+        <div class="divider">or</div>
+
+        <div class="oauth-buttons">
+          <a class="oauth-btn" href="login.html">Sign Up</a>
+          <a class="oauth-btn" href="login.html">Continue with Google</a>
+        </div>
+
+        <p class="legal">By continuing you agree to our Terms and acknowledge our Privacy Policy.</p>
+
+        <!-- （可選）若你要啟用 Passkey/Conditional UI，可在支援的瀏覽器加入這個隱藏欄位
+        <input type="text" style="display:none" autocomplete="webauthn">
+        -->
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-copyright">
+        © 2025 3D Coverflow. All rights reserved. | Designed by
+        <a href="https://templatemo.com" target="_blank" rel="noopener noreferrer">TemplateMo</a>
+      </div>
+      <div class="footer-links">
+        <a href="#privacy" onclick="event.preventDefault(); alert('Privacy Policy page would go here');">Privacy Policy</a>
+        <a href="#terms" onclick="event.preventDefault(); alert('Terms of Service page would go here');">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to top -->
+  <div class="scroll-to-top" id="scrollToTop"><span>↑</span></div>
+
+  <script>
+    // === 導覽列（複製你現有的最小功能） ===
+    const menuToggle = document.getElementById('menuToggle');
+    const mainMenu = document.getElementById('mainMenu');
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
+      mainMenu.classList.toggle('active');
+    });
+    document.addEventListener('click', (e) => {
+      if (!menuToggle.contains(e.target) && !mainMenu.contains(e.target)) {
+        menuToggle.classList.remove('active');
+        mainMenu.classList.remove('active');
+      }
+    });
+    document.querySelectorAll('.menu-item:not(.external)').forEach(item => {
+      item.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        mainMenu.classList.remove('active');
+      });
+    });
+    const header = document.getElementById('header');
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
+      if (window.scrollY > 500) scrollToTopBtn.classList.add('visible');
+      else scrollToTopBtn.classList.remove('visible');
+    });
+    scrollToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // === 簡易登入邏輯（前端測試用） ===
+    const TEST_USER = 'tony030824';
+    const TEST_PASS = 'Tony030824.'; // 注意末尾的點
+
+    const form = document.getElementById('loginForm');
+    const user = document.getElementById('username');
+    const pwd = document.getElementById('password');
+    const togglePwd = document.querySelector('.password-toggle');
+    const errBox = document.getElementById('loginError');
+
+    // 顯示/隱藏密碼
+    togglePwd.addEventListener('click', () => {
+      const show = pwd.type === 'password';
+      pwd.type = show ? 'text' : 'password';
+      togglePwd.textContent = show ? 'Hide' : 'Show';
+      togglePwd.setAttribute('aria-pressed', String(show));
+      togglePwd.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    });
+
+    // 初始化導覽列登入狀態
+    const loginNav = document.getElementById('loginNav');
+    const accountNav = document.getElementById('accountNav');
+    const accountBtn = document.getElementById('accountBtn');
+    const accountMenu = document.getElementById('accountMenu');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    function setAuthUI(isAuthed) {
+      if (isAuthed) {
+        loginNav.style.display = 'none';
+        accountNav.style.display = 'inline-block';
+      } else {
+        loginNav.style.display = '';
+        accountNav.style.display = 'none';
+      }
+    }
+
+    function readAuth() {
+      return !!localStorage.getItem('authUser');
+    }
+    function writeAuth(username) {
+      localStorage.setItem('authUser', username);
+    }
+    function clearAuth() {
+      localStorage.removeItem('authUser');
+    }
+
+    // 初次載入：依 localStorage 狀態切換 UI
+    setAuthUI(readAuth());
+
+    // Account 下拉開關（ARIA: aria-haspopup/expanded）
+    accountBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const opening = !accountMenu.classList.contains('open');
+      accountMenu.classList.toggle('open', opening);
+      accountBtn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+      accountMenu.setAttribute('aria-hidden', opening ? 'false' : 'true');
+    });
+
+    // 點窗外關閉
+    document.addEventListener('click', (e) => {
+      if (accountMenu.classList.contains('open') && !accountNav.contains(e.target)) {
+        accountMenu.classList.remove('open');
+        accountBtn.setAttribute('aria-expanded', 'false');
+        accountMenu.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // ESC 關閉
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && accountMenu.classList.contains('open')) {
+        accountMenu.classList.remove('open');
+        accountBtn.setAttribute('aria-expanded', 'false');
+        accountMenu.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // Logout
+    logoutBtn.addEventListener('click', () => {
+      clearAuth();
+      setAuthUI(false);
+      accountMenu.classList.remove('open');
+      accountBtn.setAttribute('aria-expanded', 'false');
+      accountMenu.setAttribute('aria-hidden', 'true');
+      // 回到登入頁
+      window.location.href = 'login.html';
+    });
+
+    // 表單送出
+    form.addEventListener('submit', (e) => {
+      // 原生驗證（required/minlength 等）
+      if (!form.checkValidity()) {
+        e.preventDefault();
+        form.reportValidity();
+        return;
+      }
+      e.preventDefault(); // 只有前端測試，不送到後端
+
+      const ok = (user.value.trim() === TEST_USER) && (pwd.value === TEST_PASS);
+      if (!ok) {
+        errBox.textContent = 'Username or Password is incorrect.';
+        errBox.style.display = 'block';
+        return;
+      }
+
+      // 成功登入
+      errBox.style.display = 'none';
+      writeAuth(TEST_USER);
+      setAuthUI(true);
+      window.location.href = 'index.html'
+      // 你可以在此導向到首頁或 Dashboard
+      // window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

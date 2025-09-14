@@ -174,7 +174,6 @@ https://templatemo.com/tm-595-3d-coverflow
         /* Home Section with Coverflow */
         .coverflow-wrapper {
             width: 100%;
-
             height: 100vh;
             display: flex;
             align-items: center;
@@ -191,6 +190,13 @@ https://templatemo.com/tm-595-3d-coverflow
             perspective: 1200px;
             position: relative;
         }
+
+        /* 去掉首頁 Coverflow 容器被聚焦時的藍色外框 */
+        .coverflow-container:focus,
+        .coverflow-container:focus-visible {
+        outline: none;
+        }
+
 
         .coverflow {
             display: flex;
