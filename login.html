@@ -369,13 +369,10 @@
       }
 
       // 成功登入
-      errBox.style.display = 'none';
-      writeAuth(TEST_USER);
-      setAuthUI(true);
-      window.location.href = 'index.html'
-      // 你可以在此導向到首頁或 Dashboard
-      // window.location.href = 'index.html';
+      window.AUTH.set('tony030824');     // 寫入登入狀態
+      window.location.href = window.AUTH.redirectAfterLogin(); // 回上一頁或首頁
     });
   </script>
+  <script src="auth-ui.js" defer></script>
 </body>
 </html>
