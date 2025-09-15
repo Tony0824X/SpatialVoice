@@ -44,32 +44,32 @@ https://templatemo.com/tm-595-3d-coverflow
         // Image data with titles and descriptions
         const imageData = [
             {
-                title: "Mountain Landscape",
-                description: "Majestic peaks covered in snow during golden hour"
+                title: "Compelling Storytelling for Business",
+                description: "Earn the fastest way to engage and persuade any audience using storytelling."
             },
             {
-                title: "Forest Path",
-                description: "A winding trail through ancient woodland"
+                title: "Public Speaking Mastery",
+                description: "The most effective way to become an impactful and confident public speaker."
             },
             {
-                title: "Lake Reflection",
-                description: "Serene waters mirroring the surrounding landscape"
+                title: "Business Networking",
+                description: "Earn effective networking skills and build stronger connections with people you meet."
             },
             {
-                title: "Ocean Sunset",
-                description: "Golden hour over endless ocean waves"
+                title: "Negotiating your Salary",
+                description: "Maximize your salary when looking for a new role, promotion, or compensation adjustment."
             },
             {
-                title: "Desert Dunes",
-                description: "Rolling sand dunes under vast blue skies"
+                title: "Job Interview Preparation",
+                description: "Practice answering a range of interview questions from AI-powered avatars."
             },
             {
-                title: "Starry Night",
-                description: "Countless stars illuminating the dark sky"
+                title: "High-Impact Presentations",
+                description: "Learn how to execute important presentations, practice your delivery with interactive exercises."
             },
             {
-                title: "Waterfall",
-                description: "Cascading water through lush green forest"
+                title: "Pitching your Innovative Ideas",
+                description: "Practice pitching your STEAM project and answering a range of questions from an evaluator."
             }
         ];
 

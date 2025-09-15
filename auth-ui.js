@@ -50,6 +50,8 @@
           <button class="menu-item account-btn" id="accountBtn" aria-haspopup="menu" aria-expanded="false">Account ▾</button>
           <div class="account-menu" id="accountMenu" role="menu" aria-labelledby="accountBtn" aria-hidden="true">
             <a href="#" role="menuitem" class="account-item">Dashboard</a>
+            <a href="#" role="menuitem" class="account-item">Manage AI Coach</a>
+            <a href="#" role="menuitem" class="account-item">History</a>
             <a href="#" role="menuitem" class="account-item">Setting</a>
             <button type="button" role="menuitem" class="account-item" id="logoutBtn">Logout</button>
           </div>
